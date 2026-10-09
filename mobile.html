@@ -14,7 +14,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- COMMON CONFIG FILE -->
-  <script src="config.js"></script>
+  <script src="config.js?v=4"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap');
@@ -73,12 +73,12 @@
         <div class="truncate">
           <!-- ADMIN DROPDOWN OR SHOP TITLE -->
           <div id="shopSelectorWrapper" class="hidden">
-            <select id="shopSelector" onchange="onShopChanged(this.value)" class="bg-slate-800 text-emerald-400 font-extrabold text-xs px-2 py-1 rounded-lg border border-slate-700 outline-none">
+            <select id="shopSelector" onchange="onShopChanged(this.value)" class="bg-slate-800 text-emerald-400 font-extrabold text-xs px-2 py-1 rounded-lg border border-slate-700 outline-none cursor-pointer">
             </select>
           </div>
           <h1 id="shopStaticTitle" class="text-xs font-black truncate">...</h1>
           
-          <!-- DATE PICKER BAR (തീയതി തിരഞ്ഞെടുക്കാനുള്ള ബോക്സ്) -->
+          <!-- DATE PICKER BAR -->
           <div class="flex items-center gap-1.5 mt-0.5">
             <input 
               type="date" 
@@ -89,7 +89,7 @@
             <button 
               type="button" 
               onclick="setTodayDate()" 
-              title="ഇന്നത്തെ തീയതിയിലേക്ക് മാറ്റുക" 
+              title="ഇന്നത്തെ തീയതി" 
               class="bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 text-[9px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/40 touch-btn cursor-pointer">
               ഇന്ന്
             </button>
@@ -337,7 +337,7 @@
     <div class="bg-white rounded-2xl max-w-xs w-full p-5 shadow-2xl border text-center space-y-3">
       <h3 class="text-base font-bold text-slate-800">സെക്യൂരിറ്റി പിൻ</h3>
       <p class="text-xs text-slate-500">ഡിലീറ്റ് ചെയ്യാൻ ലോഗിൻ പിൻ നൽകുക</p>
-      <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" id="pinInput" placeholder="••••" class="text-center text-2xl tracking-[0.4em] font-black w-36 py-2 border-2 rounded-xl mx-auto block outline-none focus:border-rose-500" />
+      <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" id="pinInput" placeholder="••••" class="text-center text-2xl tracking-[0.4em] font-black w-36 py-2 border-2 rounded-xl mx-auto block outline-none focus:border-rose-500" onkeydown="if(event.key === 'Enter') verifyPinAndExecute()" />
       <div class="flex gap-2 pt-2">
         <button onclick="closePinModal()" class="flex-1 py-2 rounded-lg bg-slate-100 text-xs font-semibold cursor-pointer">റദ്ദാക്കുക</button>
         <button onclick="verifyPinAndExecute()" class="flex-1 py-2 rounded-lg bg-rose-600 text-white text-xs font-bold cursor-pointer">ഡിലീറ്റ്</button>
@@ -368,13 +368,11 @@
       return new Date().toISOString().split('T')[0];
     }
 
-    // നിലവിൽ തിരഞ്ഞെടുത്ത തീയതി തിരികെ നൽകുന്നു
     function getSelectedDate() {
       const dt = document.getElementById("mobileFilterDate");
       return (dt && dt.value) ? dt.value : getSaudiToday();
     }
 
-    // "ഇന്ന്" ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ
     function setTodayDate() {
       const today = getSaudiToday();
       const dt = document.getElementById("mobileFilterDate");
@@ -382,7 +380,6 @@
       renderQuickTotalsAndRecent();
     }
 
-    // തീയതി കലണ്ടറിൽ നിന്ന് മാറുമ്പോൾ
     function onDateChanged(val) {
       renderQuickTotalsAndRecent();
     }
@@ -403,11 +400,10 @@
         }, 300);
       }
 
-      // ഡിഫോൾട്ടായി ഇന്നത്തെ തീയതി സെറ്റ് ചെയ്യുന്നു
       const dtInput = document.getElementById("mobileFilterDate");
       if (dtInput) dtInput.value = getSaudiToday();
 
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     });
 
     // 1. ലോഗിൻ പരിശോധന
@@ -418,7 +414,7 @@
 
       if (!enteredPin) return alert("പിൻ നൽകുക!");
 
-      // മാസ്റ്റർ പിൻ പരിശോധിക്കുന്നു
+      // മാസ്റ്റർ പിൻ
       if (window.MASTER_PIN && enteredPin === String(window.MASTER_PIN)) {
         sessionStorage.setItem("RUGAMA_LOGGED_IN", "true");
         sessionStorage.setItem("RUGAMA_USER_ROLE", "admin");
@@ -430,7 +426,7 @@
         return;
       }
 
-      // ഷോപ്പ് പിൻ പരിശോധിക്കുന്നു
+      // ഷോപ്പ് പിൻ
       const matched = (SHOPS || []).find(s => String(s.pin) === enteredPin);
       if (matched) {
         sessionStorage.setItem("RUGAMA_LOGGED_IN", "true");
@@ -475,7 +471,7 @@
       }
     }
 
-    // 2. മൾട്ടി-ഷോപ്പ് കണക്റ്റിവിറ്റി
+    // 2. മൾട്ടി-ഷോപ്പ് ഇനിഷ്യലൈസ്
     function initMultiShopSystem(forceShopId = null) {
       const sel = document.getElementById("shopSelector");
       if (sel) sel.innerHTML = "";
@@ -556,7 +552,7 @@
           iconWrap.className = "p-1.5 rounded-xl bg-slate-50";
         }
       });
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     // 4. ഡാറ്റ ഫെച്ച് ചെയ്യൽ
@@ -646,13 +642,28 @@
         btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> ചിലവ് സേവ് ചെയ്യുക`;
         info.innerText = "";
       }
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
-    // 5. ഇടപാടുകൾ സേവ് ചെയ്യൽ (തിരഞ്ഞെടുത്ത തീയതിയിലേക്ക് സേവ് ആകുന്നു)
+    // 5. ഇടപാടുകൾ സേവ് ചെയ്യൽ (ഓട്ടോ-കസ്റ്റമർ, വെണ്ടർ, ചിലവ് ആഡിംഗ് ഉൾപ്പെടെ)
     async function saveSaleEntry() {
-      const name = document.getElementById("saleCustomerInput").value.trim();
-      if (!name) return alert("കസ്റ്റമർ പേര് നൽകുക!");
+      let rawName = document.getElementById("saleCustomerInput").value.trim();
+      if (!rawName) return alert("കസ്റ്റമർ പേര് നൽകുക!");
+      let name = rawName.split(' (')[0].trim();
+
+      let cust = (customersList || []).find(c => c && c.name && c.name.toLowerCase() === name.toLowerCase());
+      if (!cust) {
+        const newCust = { name: name, type: 'cash', opening_balance: 0 };
+        if (navigator.onLine && supabaseClient) {
+          try {
+            await supabaseClient.from('customers').insert([newCust]);
+          } catch (e) {
+            console.warn("Auto customer insert error:", e);
+          }
+        }
+        customersList.push(newCust);
+        populateDropdowns();
+      }
 
       const cash = parseFloat(document.getElementById("saleCash").value) || 0;
       const bank = parseFloat(document.getElementById("saleBank").value) || 0;
@@ -683,8 +694,23 @@
     }
 
     async function savePurchaseEntry() {
-      const name = document.getElementById("purchaseVendorInput").value.trim();
-      if (!name) return alert("വെണ്ടർ പേര് നൽകുക!");
+      let rawName = document.getElementById("purchaseVendorInput").value.trim();
+      if (!rawName) return alert("വെണ്ടർ പേര് നൽകുക!");
+      let name = rawName.split(' (')[0].trim();
+
+      let vend = (vendorsList || []).find(v => v && v.name && v.name.toLowerCase() === name.toLowerCase());
+      if (!vend) {
+        const newVend = { name: name, type: 'cash', opening_balance: 0 };
+        if (navigator.onLine && supabaseClient) {
+          try {
+            await supabaseClient.from('vendors').insert([newVend]);
+          } catch (e) {
+            console.warn("Auto vendor insert error:", e);
+          }
+        }
+        vendorsList.push(newVend);
+        populateDropdowns();
+      }
 
       const cash = parseFloat(document.getElementById("purCash").value) || 0;
       const bank = parseFloat(document.getElementById("purBank").value) || 0;
@@ -715,8 +741,8 @@
     }
 
     async function saveUnifiedExpSalEntry() {
-      const name = document.getElementById("unifiedPartyInput").value.trim();
-      if (!name) return alert("ഇനം അല്ലെങ്കിൽ ജീവനക്കാരന്റെ പേര് നൽകുക!");
+      let rawVal = document.getElementById("unifiedPartyInput").value.trim();
+      if (!rawVal) return alert("ഇനം അല്ലെങ്കിൽ ജീവനക്കാരന്റെ പേര് നൽകുക!");
 
       const cash = parseFloat(document.getElementById("expSalCashAmt").value) || 0;
       const bank = parseFloat(document.getElementById("expSalBankAmt").value) || 0;
@@ -724,7 +750,7 @@
 
       if (cash <= 0 && bank <= 0) return alert("തുക നൽകുക!");
 
-      const emp = employeesList.find(e => e.name.toLowerCase() === name.toLowerCase());
+      const emp = (employeesList || []).find(e => e && e.name && e.name.toLowerCase() === rawVal.toLowerCase());
       let payload = {};
 
       if (emp) {
@@ -737,10 +763,26 @@
           credit_amount: 0
         };
       } else {
+        let expName = rawVal.split(' (')[0].trim();
+        let exp = (expensesMasterList || []).find(e => e && e.name && e.name.toLowerCase() === expName.toLowerCase());
+
+        if (!exp) {
+          const newExp = { name: expName, opening_balance: 0 };
+          if (navigator.onLine && supabaseClient) {
+            try {
+              await supabaseClient.from('expenses_master').insert([newExp]);
+            } catch (e) {
+              console.warn("Auto expense insert error:", e);
+            }
+          }
+          expensesMasterList.push(newExp);
+          populateDropdowns();
+        }
+
         payload = {
           date: getSelectedDate(),
           type: 'expense',
-          party_name: `${name} (${note || name})`,
+          party_name: `${expName} (${note || expName})`,
           cash_amount: -cash,
           bank_amount: -bank,
           credit_amount: 0
@@ -760,7 +802,7 @@
       }
     }
 
-    // 6. തിരഞ്ഞെടുത്ത തീയതിയിലെ ടോട്ടലുകളും ലിസ്റ്റും കണക്കാക്കുന്നു
+    // 6. ലൈവ് ടോട്ടലുകളും സമീപകാല എൻട്രികളും
     function renderQuickTotalsAndRecent() {
       const selectedDate = getSelectedDate();
       let saleTotal = 0, purTotal = 0, expTotal = 0;
@@ -825,12 +867,37 @@
           </div>
         `;
       }).join('');
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
-    // 7. ഡിലീറ്റ് സുരക്ഷ (PIN Verification)
+    // 7. ഡിലീറ്റ് സുരക്ഷ (2-ദിവസത്തെ റൂളോടെയുള്ള PIN Verification)
     function requestDelete(id) {
       pendingDeleteId = id;
+      
+      const txn = (transactionsList || []).find(t => String(t.id) === String(id));
+      const todayStr = getSaudiToday();
+      let isOlderThanLimit = false;
+
+      if (txn && txn.date) {
+        const txnDateStr = String(txn.date).split('T')[0].split(' ')[0].trim();
+        const limitDays = window.STAFF_DELETE_LIMIT_DAYS || 2;
+        
+        const dToday = new Date(todayStr);
+        const dTxn = new Date(txnDateStr);
+        const diffDays = Math.floor((dToday - dTxn) / (1000 * 60 * 60 * 24));
+        
+        if (diffDays > limitDays) {
+          isOlderThanLimit = true;
+        }
+      }
+
+      const subTitle = document.querySelector("#pinModal p");
+      if (subTitle) {
+        subTitle.innerText = isOlderThanLimit 
+          ? "⚠️ 2 ദിവസത്തിൽ കൂടുതൽ പഴക്കമുള്ളതാണ്! മാസ്റ്റർ പിൻ നൽകുക." 
+          : "ഡിലീറ്റ് ചെയ്യാൻ ലോഗിൻ പിൻ നൽകുക";
+      }
+
       document.getElementById("pinInput").value = "";
       document.getElementById("pinModal").classList.remove("hidden");
       document.getElementById("pinInput").focus();
@@ -847,10 +914,39 @@
       const masterPin = String(window.MASTER_PIN);
       const currentShopPin = currentShop ? String(currentShop.pin) : null;
 
-      const isValidPin = (pinVal === sessionPin) || (pinVal === masterPin) || (pinVal === currentShopPin);
-
-      if (isValidPin && pendingDeleteId) {
+      if (pendingDeleteId) {
         const id = pendingDeleteId;
+        const txn = (transactionsList || []).find(t => String(t.id) === String(id));
+        const todayStr = getSaudiToday();
+        let isOlderThanLimit = false;
+
+        if (txn && txn.date) {
+          const txnDateStr = String(txn.date).split('T')[0].split(' ')[0].trim();
+          const limitDays = window.STAFF_DELETE_LIMIT_DAYS || 2;
+          const dToday = new Date(todayStr);
+          const dTxn = new Date(txnDateStr);
+          const diffDays = Math.floor((dToday - dTxn) / (1000 * 60 * 60 * 24));
+
+          if (diffDays > limitDays) {
+            isOlderThanLimit = true;
+          }
+        }
+
+        if (isOlderThanLimit) {
+          if (pinVal !== masterPin) {
+            alert("⚠️ 2 ദിവസത്തിൽ കൂടുതൽ പഴക്കമുള്ള എൻട്രികൾ ഡിലീറ്റ് ചെയ്യാൻ സൂപ്പർ അഡ്മിൻ മാസ്റ്റർ പിൻ തന്നെ നൽകണം!");
+            document.getElementById("pinInput").value = "";
+            return;
+          }
+        } else {
+          const isValidPin = (pinVal === sessionPin) || (pinVal === masterPin) || (pinVal === currentShopPin);
+          if (!isValidPin) {
+            alert("പിൻ തെറ്റാണ്! ശരിയായ പാസ്‌വേഡ് നൽകുക.");
+            document.getElementById("pinInput").value = "";
+            return;
+          }
+        }
+
         closePinModal();
         const { error } = await supabaseClient.from('transactions').delete().eq('id', id);
         if (error) alert("ഡിലീറ്റ് ചെയ്യാൻ സാധിച്ചില്ല: " + error.message);
@@ -858,9 +954,6 @@
           alert("വിജയകരമായി ഡിലീറ്റ് ചെയ്തു!");
           fetchAllData();
         }
-      } else {
-        alert("പിൻ തെറ്റാണ്!");
-        document.getElementById("pinInput").value = "";
       }
     }
   </script>
