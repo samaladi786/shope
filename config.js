@@ -1,5 +1,9 @@
 // config.js - മൾട്ടി-ഷോപ്പ് കോൺഫിഗറേഷൻ & വിഷ്വൽ തീം
 
+// 1. സൂപ്പർ അഡ്മിൻ / മാസ്റ്റർ പിൻ (എല്ലാ ഷോപ്പുകളിലേക്കും പ്രവേശിക്കാനും ഡിലീറ്റ് ചെയ്യാനും)
+window.MASTER_PIN = '0000'; // നിങ്ങൾക്ക് ഇഷ്ടമുള്ള 4-അക്ക മാസ്റ്റർ പിൻ ഇവിടെ നൽകാം
+
+// 2. ഷോപ്പുകളുടെ വിവരങ്ങൾ
 window.SHOPS_CONFIG = [
   {
     id: 'shop1',
@@ -7,13 +11,12 @@ window.SHOPS_CONFIG = [
     tagline: 'Main Supermarket Branch',
     url: 'https://elubqoicerkldrufqcbj.supabase.co',
     key: 'sb_publishable_zsEKreCmounELozZ5EQ3Lg_aXyut9EK',
-    pin: '1234',
-    deletePin: '9999',
-    // ഷോപ്പ് 1-ന്റെ തീം: പച്ച (Emerald) & ലോഗോ
-    themeGradient: 'from-emerald-900 via-slate-900 to-teal-950',
+    pin: '1234', // ഈ ഷോപ്പിന്റെ ലോഗിൻ & ഡിലീറ്റ് പിൻ
+    // തീം & ലോഗോ
+    themeGradient: 'from-emerald-950 via-slate-900 to-teal-950',
     accentColor: 'text-emerald-400',
     badgeBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-    logo: 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png' // നിങ്ങളുടെ ഷോപ്പ് ഫോട്ടോ / Logo URL ഇവിടെ നൽകാം
+    logo: 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'
   },
   {
     id: 'shop2',
@@ -21,21 +24,14 @@ window.SHOPS_CONFIG = [
     tagline: 'Boofiya Restaurant & Cafeteria',
     url: 'https://qkjcviszzdptssvpguwc.supabase.co',
     key: 'sb_publishable_J0Z4b7NoP3VuDKdbC0WeIg_OQAlpnLQ',
-    pin: '5678',
-    deletePin: '8888',
-    // ഷോപ്പ് 2-ന്റെ തീം: ഓറഞ്ച്/ചുവപ്പ് (Amber/Rose) & ലോഗോ
+    pin: '5678', // ഈ ഷോപ്പിന്റെ ലോഗിൻ & ഡിലീറ്റ് പിൻ
+    // തീം & ലോഗോ
     themeGradient: 'from-amber-950 via-slate-900 to-orange-950',
     accentColor: 'text-amber-400',
     badgeBg: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
-    logo: 'https://cdn-icons-png.flaticon.com/512/1046/1046784.png' // ബൂഫിയ ലോഗോ / ഫോട്ടോ URL
+    logo: 'https://cdn-icons-png.flaticon.com/512/1046/1046784.png'
   }
 ];
-
-// ഡിഫോൾട്ട് കോൺഫിഗറേഷൻ
-window.GLOBAL_CONFIG = {
-  supabaseUrl: 'https://elubqoicerkldrufqcbj.supabase.co',
-  supabaseKey: 'sb_publishable_zsEKreCmounELozZ5EQ3Lg_aXyut9EK'
-};
 
 // സൗദി ബിസിനസ് തീയതി (രാവിലെ 6:00 AM കട്ട്-ഓഫ്)
 window.getSaudiBusinessDate = function() {
