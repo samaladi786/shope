@@ -24,7 +24,7 @@ window.SHOPS_CONFIG = [
     tagline: 'Boofiya Restaurant & Cafeteria',
     url: 'https://qkjcviszzdptssvpguwc.supabase.co',
     key: 'sb_publishable_J0Z4b7NoP3VuDKdbC0WeIg_OQAlpnLQ',
-    pin: '5678', // ഈ ഷോപ്പിന്റെ ലോഗിൻ & ഡിലീറ്റ് പിൻ
+    pin: '1111', // ഈ ഷോപ്പിന്റെ ലോഗിൻ & ഡിലീറ്റ് പിൻ
     // തീം & ലോഗോ
     themeGradient: 'from-amber-950 via-slate-900 to-orange-950',
     accentColor: 'text-amber-400',
