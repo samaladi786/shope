@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title id="mobilePageTitle">ALNASSR POS</title>
+  <title id="mobilePageTitle">Rugama Quick POS</title>
 
   <!-- PWA MANIFEST & ICONS -->
   <link rel="manifest" href="manifest.json">
@@ -54,7 +54,7 @@
         />
         <button 
           type="submit" 
-          class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-md touch-btn flex items-center justify-center gap-1.5">
+          class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-md touch-btn flex items-center justify-center gap-1.5 cursor-pointer">
           <i data-lucide="log-in" class="w-4 h-4"></i> ലോഗിൻ ചെയ്യുക
         </button>
       </form>
@@ -77,21 +77,37 @@
             </select>
           </div>
           <h1 id="shopStaticTitle" class="text-xs font-black truncate">...</h1>
-          <p id="headerDateText" class="text-[10px] text-slate-300 font-medium">--</p>
+          
+          <!-- DATE PICKER BAR (തീയതി തിരഞ്ഞെടുക്കാനുള്ള ബോക്സ്) -->
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <input 
+              type="date" 
+              id="mobileFilterDate" 
+              onchange="onDateChanged(this.value)" 
+              class="bg-slate-800 text-emerald-400 text-[11px] font-black px-2 py-0.5 rounded-md border border-slate-700 outline-none cursor-pointer" 
+            />
+            <button 
+              type="button" 
+              onclick="setTodayDate()" 
+              title="ഇന്നത്തെ തീയതിയിലേക്ക് മാറ്റുക" 
+              class="bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 text-[9px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/40 touch-btn cursor-pointer">
+              ഇന്ന്
+            </button>
+          </div>
         </div>
       </div>
 
       <div class="flex items-center gap-1.5 shrink-0">
         <!-- DESKTOP PORTAL LINK -->
-        <a href="index.html" title="ഡെസ്ക്ടോപ്പ് വ്യൂ" class="p-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-xl text-xs touch-btn">
+        <a href="index.html" title="ഡെസ്ക്ടോപ്പ് വ്യൂ" class="p-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-xl text-xs touch-btn cursor-pointer">
           <i data-lucide="monitor" class="w-4 h-4"></i>
         </a>
         <!-- REFRESH BUTTON -->
-        <button onclick="fetchAllData(true)" class="p-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-xl text-xs touch-btn">
+        <button onclick="fetchAllData(true)" class="p-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-xl text-xs touch-btn cursor-pointer">
           <i data-lucide="refresh-cw" class="w-4 h-4"></i>
         </button>
         <!-- LOGOUT BUTTON -->
-        <button onclick="logoutApp()" class="p-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs touch-btn">
+        <button onclick="logoutApp()" class="p-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs touch-btn cursor-pointer">
           <i data-lucide="log-out" class="w-4 h-4"></i>
         </button>
       </div>
@@ -266,12 +282,12 @@
       </div>
     </div>
 
-    <!-- TAB 4: RECENT TODAY ENTRIES -->
+    <!-- TAB 4: RECENT ENTRIES OF SELECTED DATE -->
     <div id="view-recent" class="tab-view hidden space-y-3">
       <div class="bg-white p-4 rounded-3xl border shadow-sm space-y-2.5">
         <div class="flex items-center justify-between border-b pb-2">
           <h2 class="font-extrabold text-sm text-slate-800 flex items-center gap-1.5">
-            <i data-lucide="history" class="w-4 h-4 text-slate-600"></i> ഇന്നത്തെ എൻട്രികൾ (Recent)
+            <i data-lucide="history" class="w-4 h-4 text-slate-600"></i> ഇടപാടുകൾ (Selected Date)
           </h2>
           <span id="recentCountBadge" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold">0 എൻട്രികൾ</span>
         </div>
@@ -286,32 +302,32 @@
   <!-- 4. FIXED THUMB-FRIENDLY BOTTOM NAVIGATION BAR -->
   <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2 z-40 shadow-lg flex items-center justify-around">
     
-    <button onclick="switchMobileTab('sale')" id="mTab-sale" class="flex flex-col items-center gap-1 text-emerald-600 font-extrabold text-[11px] touch-btn">
+    <button onclick="switchMobileTab('sale')" id="mTab-sale" class="flex flex-col items-center gap-1 text-emerald-600 font-extrabold text-[11px] touch-btn cursor-pointer">
       <div class="p-1.5 rounded-xl bg-emerald-50">
         <i data-lucide="shopping-cart" class="w-5 h-5"></i>
       </div>
       <span>സെയിൽ</span>
     </button>
 
-    <button onclick="switchMobileTab('purchase')" id="mTab-purchase" class="flex flex-col items-center gap-1 text-slate-400 font-bold text-[11px] touch-btn">
+    <button onclick="switchMobileTab('purchase')" id="mTab-purchase" class="flex flex-col items-center gap-1 text-slate-400 font-bold text-[11px] touch-btn cursor-pointer">
       <div class="p-1.5 rounded-xl bg-slate-50">
         <i data-lucide="shopping-bag" class="w-5 h-5"></i>
       </div>
       <span>പർച്ചേസ്</span>
     </button>
 
-    <button onclick="switchMobileTab('expense')" id="mTab-expense" class="flex flex-col items-center gap-1 text-slate-400 font-bold text-[11px] touch-btn">
+    <button onclick="switchMobileTab('expense')" id="mTab-expense" class="flex flex-col items-center gap-1 text-slate-400 font-bold text-[11px] touch-btn cursor-pointer">
       <div class="p-1.5 rounded-xl bg-slate-50">
         <i data-lucide="receipt" class="w-5 h-5"></i>
       </div>
       <span>ചിലവ്</span>
     </button>
 
-    <button onclick="switchMobileTab('recent')" id="mTab-recent" class="flex flex-col items-center gap-1 text-slate-400 font-bold text-[11px] touch-btn">
+    <button onclick="switchMobileTab('recent')" id="mTab-recent" class="flex flex-col items-center gap-1 text-slate-400 font-bold text-[11px] touch-btn cursor-pointer">
       <div class="p-1.5 rounded-xl bg-slate-50">
         <i data-lucide="history" class="w-5 h-5"></i>
       </div>
-      <span>ഇന്ന്</span>
+      <span>ലിസ്റ്റ്</span>
     </button>
 
   </nav>
@@ -323,8 +339,8 @@
       <p class="text-xs text-slate-500">ഡിലീറ്റ് ചെയ്യാൻ ലോഗിൻ പിൻ നൽകുക</p>
       <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" id="pinInput" placeholder="••••" class="text-center text-2xl tracking-[0.4em] font-black w-36 py-2 border-2 rounded-xl mx-auto block outline-none focus:border-rose-500" />
       <div class="flex gap-2 pt-2">
-        <button onclick="closePinModal()" class="flex-1 py-2 rounded-lg bg-slate-100 text-xs font-semibold">റദ്ദാക്കുക</button>
-        <button onclick="verifyPinAndExecute()" class="flex-1 py-2 rounded-lg bg-rose-600 text-white text-xs font-bold">ഡിലീറ്റ്</button>
+        <button onclick="closePinModal()" class="flex-1 py-2 rounded-lg bg-slate-100 text-xs font-semibold cursor-pointer">റദ്ദാക്കുക</button>
+        <button onclick="verifyPinAndExecute()" class="flex-1 py-2 rounded-lg bg-rose-600 text-white text-xs font-bold cursor-pointer">ഡിലീറ്റ്</button>
       </div>
     </div>
   </div>
@@ -344,11 +360,31 @@
 
     let pendingDeleteId = null;
 
+    // സൗദി തീയതി (രാവിലെ 6:00 AM കട്ട്-ഓഫ്)
     function getSaudiToday() {
       if (window.getSaudiBusinessDate && typeof window.getSaudiBusinessDate === 'function') {
         return window.getSaudiBusinessDate();
       }
       return new Date().toISOString().split('T')[0];
+    }
+
+    // നിലവിൽ തിരഞ്ഞെടുത്ത തീയതി തിരികെ നൽകുന്നു
+    function getSelectedDate() {
+      const dt = document.getElementById("mobileFilterDate");
+      return (dt && dt.value) ? dt.value : getSaudiToday();
+    }
+
+    // "ഇന്ന്" ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ
+    function setTodayDate() {
+      const today = getSaudiToday();
+      const dt = document.getElementById("mobileFilterDate");
+      if (dt) dt.value = today;
+      renderQuickTotalsAndRecent();
+    }
+
+    // തീയതി കലണ്ടറിൽ നിന്ന് മാറുമ്പോൾ
+    function onDateChanged(val) {
+      renderQuickTotalsAndRecent();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -367,7 +403,10 @@
         }, 300);
       }
 
-      document.getElementById("headerDateText").innerText = getSaudiToday();
+      // ഡിഫോൾട്ടായി ഇന്നത്തെ തീയതി സെറ്റ് ചെയ്യുന്നു
+      const dtInput = document.getElementById("mobileFilterDate");
+      if (dtInput) dtInput.value = getSaudiToday();
+
       lucide.createIcons();
     });
 
@@ -379,7 +418,7 @@
 
       if (!enteredPin) return alert("പിൻ നൽകുക!");
 
-      // മാസ്റ്റർ പിൻ
+      // മാസ്റ്റർ പിൻ പരിശോധിക്കുന്നു
       if (window.MASTER_PIN && enteredPin === String(window.MASTER_PIN)) {
         sessionStorage.setItem("RUGAMA_LOGGED_IN", "true");
         sessionStorage.setItem("RUGAMA_USER_ROLE", "admin");
@@ -391,7 +430,7 @@
         return;
       }
 
-      // ഷോപ്പ് പിൻ
+      // ഷോപ്പ് പിൻ പരിശോധിക്കുന്നു
       const matched = (SHOPS || []).find(s => String(s.pin) === enteredPin);
       if (matched) {
         sessionStorage.setItem("RUGAMA_LOGGED_IN", "true");
@@ -436,7 +475,7 @@
       }
     }
 
-    // 2. മൾട്ടി-ഷോപ്പ് ഇനിഷ്യലൈസ് ചെയ്യൽ
+    // 2. മൾട്ടി-ഷോപ്പ് കണക്റ്റിവിറ്റി
     function initMultiShopSystem(forceShopId = null) {
       const sel = document.getElementById("shopSelector");
       if (sel) sel.innerHTML = "";
@@ -510,10 +549,10 @@
         const btn = document.getElementById(`mTab-${t}`);
         const iconWrap = btn.querySelector('div');
         if (t === tabId) {
-          btn.className = `flex flex-col items-center gap-1 font-extrabold text-[11px] touch-btn ${t === 'sale' ? 'text-emerald-600' : t === 'purchase' ? 'text-blue-600' : t === 'expense' ? 'text-amber-600' : 'text-slate-800'}`;
+          btn.className = `flex flex-col items-center gap-1 font-extrabold text-[11px] touch-btn cursor-pointer ${t === 'sale' ? 'text-emerald-600' : t === 'purchase' ? 'text-blue-600' : t === 'expense' ? 'text-amber-600' : 'text-slate-800'}`;
           iconWrap.className = `p-1.5 rounded-xl ${t === 'sale' ? 'bg-emerald-100' : t === 'purchase' ? 'bg-blue-100' : t === 'expense' ? 'bg-amber-100' : 'bg-slate-200'}`;
         } else {
-          btn.className = "flex flex-col items-center gap-1 text-slate-400 font-bold text-[11px] touch-btn";
+          btn.className = "flex flex-col items-center gap-1 text-slate-400 font-bold text-[11px] touch-btn cursor-pointer";
           iconWrap.className = "p-1.5 rounded-xl bg-slate-50";
         }
       });
@@ -610,7 +649,7 @@
       lucide.createIcons();
     }
 
-    // 5. ഇടപാടുകൾ സേവ് ചെയ്യൽ (Insert Transactions)
+    // 5. ഇടപാടുകൾ സേവ് ചെയ്യൽ (തിരഞ്ഞെടുത്ത തീയതിയിലേക്ക് സേവ് ആകുന്നു)
     async function saveSaleEntry() {
       const name = document.getElementById("saleCustomerInput").value.trim();
       if (!name) return alert("കസ്റ്റമർ പേര് നൽകുക!");
@@ -622,7 +661,7 @@
       if (cash <= 0 && bank <= 0 && credit <= 0) return alert("തുക നൽകുക!");
 
       const payload = {
-        date: getSaudiToday(),
+        date: getSelectedDate(),
         type: 'sale',
         party_name: name,
         cash_amount: cash,
@@ -654,7 +693,7 @@
       if (cash <= 0 && bank <= 0 && credit <= 0) return alert("തുക നൽകുക!");
 
       const payload = {
-        date: getSaudiToday(),
+        date: getSelectedDate(),
         type: 'purchase',
         party_name: name,
         cash_amount: -cash,
@@ -690,7 +729,7 @@
 
       if (emp) {
         payload = {
-          date: getSaudiToday(),
+          date: getSelectedDate(),
           type: 'salary',
           party_name: `Staff: ${emp.name} - ${note || 'സാലറി'}`,
           cash_amount: -cash,
@@ -699,7 +738,7 @@
         };
       } else {
         payload = {
-          date: getSaudiToday(),
+          date: getSelectedDate(),
           type: 'expense',
           party_name: `${name} (${note || name})`,
           cash_amount: -cash,
@@ -721,16 +760,16 @@
       }
     }
 
-    // 6. ലൈവ് ടോട്ടലുകളും സമീപകാല ലിസ്റ്റും
+    // 6. തിരഞ്ഞെടുത്ത തീയതിയിലെ ടോട്ടലുകളും ലിസ്റ്റും കണക്കാക്കുന്നു
     function renderQuickTotalsAndRecent() {
-      const today = getSaudiToday();
+      const selectedDate = getSelectedDate();
       let saleTotal = 0, purTotal = 0, expTotal = 0;
-      let todayList = [];
+      let dateFilteredList = [];
 
       transactionsList.forEach(t => {
-        const isToday = String(t.date).startsWith(today);
-        if (isToday) {
-          todayList.push(t);
+        const isSelectedDate = String(t.date).startsWith(selectedDate);
+        if (isSelectedDate) {
+          dateFilteredList.push(t);
           if (t.type === 'sale') {
             saleTotal += (parseFloat(t.cash_amount) || 0) + (parseFloat(t.bank_amount) || 0) + (parseFloat(t.credit_amount) || 0);
           } else if (t.type === 'purchase') {
@@ -744,15 +783,15 @@
       document.getElementById("quickSaleTotal").innerText = `₹${saleTotal.toLocaleString('en-IN')}`;
       document.getElementById("quickPurTotal").innerText = `₹${purTotal.toLocaleString('en-IN')}`;
       document.getElementById("quickExpTotal").innerText = `₹${expTotal.toLocaleString('en-IN')}`;
-      document.getElementById("recentCountBadge").innerText = `${todayList.length} എൻട്രികൾ`;
+      document.getElementById("recentCountBadge").innerText = `${dateFilteredList.length} എൻട്രികൾ`;
 
       const listContainer = document.getElementById("todayRecentList");
-      if (todayList.length === 0) {
-        listContainer.innerHTML = `<div class="py-6 text-center text-slate-400">ഇന്നത്തെ എൻട്രികൾ ഒന്നും ഇല്ല</div>`;
+      if (dateFilteredList.length === 0) {
+        listContainer.innerHTML = `<div class="py-6 text-center text-slate-400">തിരഞ്ഞെടുത്ത തീയതിയിൽ എൻട്രികൾ ഒന്നും ഇല്ല</div>`;
         return;
       }
 
-      listContainer.innerHTML = todayList.map(t => {
+      listContainer.innerHTML = dateFilteredList.map(t => {
         let amt = 0, colorClass = "text-slate-800", typeBadge = "";
         if (t.type === 'sale') {
           amt = (parseFloat(t.cash_amount) || 0) + (parseFloat(t.bank_amount) || 0) + (parseFloat(t.credit_amount) || 0);
@@ -779,7 +818,7 @@
             </div>
             <div class="flex items-center gap-2 shrink-0">
               <span class="font-black ${colorClass}">₹${amt.toLocaleString('en-IN')}</span>
-              <button onclick="requestDelete('${t.id}')" class="text-rose-500 hover:text-rose-700 p-1">
+              <button onclick="requestDelete('${t.id}')" class="text-rose-500 hover:text-rose-700 p-1 cursor-pointer">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
               </button>
             </div>
