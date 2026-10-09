@@ -1,37 +1,50 @@
-// config.js - മൾട്ടി-ഷോപ്പ് Supabase കോൺഫിഗറേഷൻ
+// config.js - മൾട്ടി-ഷോപ്പ് കോൺഫിഗറേഷൻ & വിഷ്വൽ തീം
+
+// 1. സൂപ്പർ അഡ്മിൻ / മാസ്റ്റർ പിൻ (എല്ലാ ഷോപ്പുകളിലേക്കും കയറാനും ഡിലീറ്റ് ചെയ്യാനും)
+window.MASTER_PIN = '0000'; // നിങ്ങൾക്ക് ഇഷ്ടമുള്ള മാസ്റ്റർ പിൻ ഇവിടെ നൽകാം
+
+// 2. ഷോപ്പുകളുടെ പൂർണ്ണ കോൺഫിഗറേഷൻ ലിസ്റ്റ്
 window.SHOPS_CONFIG = [
   {
     id: 'shop1',
     name: 'NASSER BIN EID ALMAHMADI',
+    tagline: 'Main Supermarket Branch',
     url: 'https://elubqoicerkldrufqcbj.supabase.co',
-    key: 'sb_publishable_zsEKreCmounELozZ5EQ3Lg_aXyut9EK'
+    key: 'sb_publishable_zsEKreCmounELozZ5EQ3Lg_aXyut9EK',
+    pin: '1234', // ലോഗിൻ & ഡിലീറ്റ് പിൻ
+    themeGradient: 'from-emerald-950 via-slate-900 to-teal-950',
+    accentColor: 'text-emerald-400',
+    badgeBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+    logo: 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'
   },
   {
     id: 'shop2',
     name: 'BOOFIYA',
+    tagline: 'Boofiya Restaurant & Cafeteria',
     url: 'https://qkjcviszzdptssvpguwc.supabase.co',
-    key: 'sb_publishable_J0Z4b7NoP3VuDKdbC0WeIg_OQAlpnLQ'
+    key: 'sb_publishable_J0Z4b7NoP3VuDKdbC0WeIg_OQAlpnLQ',
+    pin: '1111', // ലോഗിൻ & ഡിലീറ്റ് പിൻ
+    themeGradient: 'from-amber-950 via-slate-900 to-orange-950',
+    accentColor: 'text-amber-400',
+    badgeBg: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+    logo: 'https://cdn-icons-png.flaticon.com/512/1046/1046784.png'
   }
 ];
 
-// ഡിഫോൾട്ട് കോൺഫിഗറേഷൻ (മറ്റ് ഫയലുകൾക്ക് ആവശ്യമെങ്കിൽ ഉപയോഗിക്കാൻ)
+// ബാക്ക്-അപ്പ് ഗ്ലോബൽ കണക്ഷൻ
 window.GLOBAL_CONFIG = {
   supabaseUrl: 'https://elubqoicerkldrufqcbj.supabase.co',
   supabaseKey: 'sb_publishable_zsEKreCmounELozZ5EQ3Lg_aXyut9EK'
 };
 
-// സൗദി സമയം രാവിലെ 6:00 മണിക്ക് തീയതി മാറുന്ന ഫംഗ്ഷൻ (എല്ലാ ഫയലുകൾക്കും കോമൺ)
+// 3. സൗദി ബിസിനസ് തീയതി കണക്കുകൂട്ടൽ (രാവിലെ 6:00 AM കട്ട്-ഓഫ്)
 window.getSaudiBusinessDate = function() {
   const now = new Date();
-  // സൗദി ടൈംസോണിൽ (Asia/Riyadh, UTC+3) സമയം കണക്കാക്കുന്നു
   const saudiTimeStr = now.toLocaleString("en-US", { timeZone: "Asia/Riyadh" });
   const saudiDate = new Date(saudiTimeStr);
-
-  // രാവിലെ 6 മണിക്ക് മുമ്പാണെങ്കിൽ (00:00 മുതൽ 05:59 വരെ) തലേ ദിവസത്തെ തീയതി നൽകുന്നു
   if (saudiDate.getHours() < 6) {
     saudiDate.setDate(saudiDate.getDate() - 1);
   }
-
   const year = saudiDate.getFullYear();
   const month = String(saudiDate.getMonth() + 1).padStart(2, '0');
   const day = String(saudiDate.getDate()).padStart(2, '0');
