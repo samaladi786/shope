@@ -1,9 +1,9 @@
 // config.js - മൾട്ടി-ഷോപ്പ് കോൺഫിഗറേഷൻ & വിഷ്വൽ തീം
 
-// 1. സൂപ്പർ അഡ്മിൻ / മാസ്റ്റർ പിൻ (എല്ലാ ഷോപ്പുകളിലേക്കും കയറാനും ഡിലീറ്റ് ചെയ്യാനും)
-window.MASTER_PIN = '0000'; // നിങ്ങൾക്ക് ഇഷ്ടമുള്ള മാസ്റ്റർ പിൻ ഇവിടെ നൽകാം
+// 1. സൂപ്പർ അഡ്മിൻ / മാസ്റ്റർ പിൻ (എല്ലാ ഷോപ്പുകളിലേക്കും പ്രവേശിക്കാനും ഡിലീറ്റ് ചെയ്യാനും)
+window.MASTER_PIN = '0000'; // നിങ്ങൾക്ക് ഇഷ്ടമുള്ള 4-അക്ക മാസ്റ്റർ പിൻ ഇവിടെ നൽകാം
 
-// 2. ഷോപ്പുകളുടെ പൂർണ്ണ കോൺഫിഗറേഷൻ ലിസ്റ്റ്
+// 2. ഷോപ്പുകളുടെ വിവരങ്ങൾ
 window.SHOPS_CONFIG = [
   {
     id: 'shop1',
@@ -11,7 +11,8 @@ window.SHOPS_CONFIG = [
     tagline: 'Main Supermarket Branch',
     url: 'https://elubqoicerkldrufqcbj.supabase.co',
     key: 'sb_publishable_zsEKreCmounELozZ5EQ3Lg_aXyut9EK',
-    pin: '1234', // ലോഗിൻ & ഡിലീറ്റ് പിൻ
+    pin: '1234', // ഈ ഷോപ്പിന്റെ ലോഗിൻ & ഡിലീറ്റ് പിൻ
+    // തീം & ലോഗോ
     themeGradient: 'from-emerald-950 via-slate-900 to-teal-950',
     accentColor: 'text-emerald-400',
     badgeBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
@@ -23,7 +24,8 @@ window.SHOPS_CONFIG = [
     tagline: 'Boofiya Restaurant & Cafeteria',
     url: 'https://qkjcviszzdptssvpguwc.supabase.co',
     key: 'sb_publishable_J0Z4b7NoP3VuDKdbC0WeIg_OQAlpnLQ',
-    pin: '1111', // ലോഗിൻ & ഡിലീറ്റ് പിൻ
+    pin: '5678', // ഈ ഷോപ്പിന്റെ ലോഗിൻ & ഡിലീറ്റ് പിൻ
+    // തീം & ലോഗോ
     themeGradient: 'from-amber-950 via-slate-900 to-orange-950',
     accentColor: 'text-amber-400',
     badgeBg: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
@@ -31,13 +33,7 @@ window.SHOPS_CONFIG = [
   }
 ];
 
-// ബാക്ക്-അപ്പ് ഗ്ലോബൽ കണക്ഷൻ
-window.GLOBAL_CONFIG = {
-  supabaseUrl: 'https://elubqoicerkldrufqcbj.supabase.co',
-  supabaseKey: 'sb_publishable_zsEKreCmounELozZ5EQ3Lg_aXyut9EK'
-};
-
-// 3. സൗദി ബിസിനസ് തീയതി കണക്കുകൂട്ടൽ (രാവിലെ 6:00 AM കട്ട്-ഓഫ്)
+// സൗദി ബിസിനസ് തീയതി (രാവിലെ 6:00 AM കട്ട്-ഓഫ്)
 window.getSaudiBusinessDate = function() {
   const now = new Date();
   const saudiTimeStr = now.toLocaleString("en-US", { timeZone: "Asia/Riyadh" });
